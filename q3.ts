@@ -1,7 +1,13 @@
 import express from "express";
 import mongoose, { PipelineStage, Schema } from "mongoose";
 
-mongoose.connect("mongodb://localhost:27017/temp").then();
+const app = express();
+
+mongoose.connect("mongodb://localhost:27017/temp").then(() => {
+	app.listen(3000, () => {
+		console.log("Server is running on port 3000");
+	});
+});
 
 const userSchema = new Schema(
 	{
@@ -22,8 +28,6 @@ const orderSchema = new Schema(
 	{ timestamps: true }
 );
 const Order = mongoose.model("Order", orderSchema);
-
-const app = express();
 
 app.get("/latest_orders", async (req, res) => {
 	const pipeline: PipelineStage[] = [
